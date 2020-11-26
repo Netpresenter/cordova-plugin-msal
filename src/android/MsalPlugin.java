@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.util.Pair;
 
 import java.io.File;
@@ -185,11 +186,13 @@ public class MsalPlugin extends CordovaPlugin {
                         JSONArray authoritiesList = options.getJSONArray("authorities");
                         for (int i = 0; i < authoritiesList.length(); ++i) {
                             JSONObject authority = authoritiesList.getJSONObject(i);
+                            String tenantId = authority.optString("tenantId") != "" ? authority.optString("tenantId") : MsalPlugin.this.tenantId;
+                            Log.d("MSAL tenant id:", tenantId);
                             authorities.append("      {\n");
                             authorities.append("        \"type\": \"" + authority.getString("type") + "\",\n");
                             authorities.append("        \"audience\": {\n");
                             authorities.append("          \"type\": \"" + authority.getString("audience") + "\",\n");
-                            authorities.append("          \"tenant_id\": \"" + MsalPlugin.this.tenantId + "\"\n");
+                            authorities.append("          \"tenant_id\": \"" + tenantId + "\"\n");
                             authorities.append("        },\n");
                             if (authority.has("authorityUrl") && !authority.getString("authorityUrl").equals("")) {
                                 authorities.append("          \"authority_url\": \"" + authority.getString("authorityUrl") + "\",\n");
@@ -509,7 +512,7 @@ public class MsalPlugin extends CordovaPlugin {
             });
         }
     }
-    
+
 
     private File createConfigFile(String data) {
         File config = new File(this.context.getFilesDir() + "auth_config.json");
