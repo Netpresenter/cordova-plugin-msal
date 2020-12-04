@@ -8,7 +8,6 @@
 {
     NSDictionary *settings = self.commandDelegate.settings;
     self.tenantId = [settings objectForKey:[@"tenantId" lowercaseString]];
-    self.clientId = [settings objectForKey:[@"clientId" lowercaseString]];
 
     NSError *err = nil;
     NSError *msalError = nil;
@@ -28,6 +27,10 @@
     }
     NSDictionary *options = (NSDictionary *)obj;
     NSArray *authorities = [options objectForKey:@"authorities"];
+    self.clientId = [options objectForKey:@"appId"];
+
+    NSLog(@"%@",[options objectForKey:@"appId"]);
+
     for (NSDictionary *a in authorities)
     {
         MSALAuthority *authority;
