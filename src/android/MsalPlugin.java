@@ -187,7 +187,6 @@ public class MsalPlugin extends CordovaPlugin {
                         for (int i = 0; i < authoritiesList.length(); ++i) {
                             JSONObject authority = authoritiesList.getJSONObject(i);
                             String tenantId = authority.optString("tenantId") != "" ? authority.optString("tenantId") : MsalPlugin.this.tenantId;
-                            Log.d("MSAL tenant id:", tenantId);
                             authorities.append("      {\n");
                             authorities.append("        \"type\": \"" + authority.getString("type") + "\",\n");
                             authorities.append("        \"audience\": {\n");
@@ -204,7 +203,7 @@ public class MsalPlugin extends CordovaPlugin {
                         }
                         authorities.append("    ]\n");
                         data = "{\n" +
-                                "    \"client_id\" : \"" + MsalPlugin.this.clientId + "\",\n" +
+                                "    \"client_id\" : \"" + options.getString("appId") + "\",\n" +
                                 "    \"account_mode\": \"" + options.getString("accountMode") + "\",\n" +
                                 "    \"authorization_user_agent\" : \"" + options.getString("authorizationUserAgent") + "\",\n" +
                                 "    \"redirect_uri\" : \"msauth://" + MsalPlugin.this.activity.getApplicationContext().getPackageName() + "/" + keyHashUrlFriendly + "\",\n" +
